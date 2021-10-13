@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    app: python-dev-app
+    environment: dev
+  name: python-dev-app
+  namespace: app-dev-env
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: python-dev-app
+      environment: dev
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: python-dev-app
+        environment: dev
+    spec:
+      containers:
+      - env:
+        image: gcr.io/rgl-dev-svc-app1/python-source@sha256:99933600fa13f83b48319976f681801bb9dfdcfb365192e33b34d803b24859ff
+        imagePullPolicy: IfNotPresent
+        name: python-dev-app
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+
