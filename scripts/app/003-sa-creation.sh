@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-SERVICE_ACCOUNT_NAME="gke-sa-account-app1"
-SERVICE_ACCOUNT_EMAIL=${SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com
-gcloud iam service-accounts create $SERVICE_ACCOUNT_NAME
+#SERVICE_ACCOUNT_NAME="gke-sa-account-app1"
+#SERVICE_ACCOUNT_EMAIL=${SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com
+#gcloud iam service-accounts create $SERVICE_ACCOUNT_NAME
+
+Migrating to Workload Identity

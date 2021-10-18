@@ -13,6 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+echo "Creating Order Async Image"
+cd $HOME/multicluster-ingress-gke/services/order-async
 gcloud builds submit --tag gcr.io/$PROJECT_ID/order-service-async
+
+echo "Creating Customer Async Image"
+cd $HOME/multicluster-ingress-gke/services/customer-async
 gcloud builds submit --tag gcr.io/$PROJECT_ID/customer-service-async
+
+echo "Creating Event Publisher Image"
+cd $HOME/multicluster-ingress-gke/services/event-publisher
 gcloud builds submit --tag gcr.io/$PROJECT_ID/event-publisher
