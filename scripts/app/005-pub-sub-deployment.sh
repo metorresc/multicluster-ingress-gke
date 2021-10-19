@@ -13,5 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+echo "Creating Pub Sub topics"
 gcloud pubsub topics create order-service-event
 gcloud pubsub topics create customer-service-event

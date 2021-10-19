@@ -12,22 +12,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: v1
-kind: Service
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  labels:
+#    app: customer-async-app
+#    environment: dev
+#  name: customer-async-svc
+#  annotations:
+#    cloud.google.com/load-balancer-type: Internal
+#  namespace: app-mci
+#spec:
+#  selector:
+#    app: customer-async-app
+#    environment: dev
+#  type: LoadBalancer
+#  ports:
+#    - protocol: TCP
+#      port: 80
+#      targetPort: 8080
+
+apiVersion: networking.gke.io/v1
+kind: MultiClusterService
 metadata:
-  labels:
-    app: customer-async-app
-    environment: dev
   name: customer-async-svc
-  annotations:
-    cloud.google.com/load-balancer-type: Internal
   namespace: app-mci
 spec:
-  selector:
-    app: customer-async-app
-    environment: dev
-  type: LoadBalancer
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8080
+  template:
+    spec:
+      selector:
+        app: customer-async-app
+      ports:
+      - name: customer-async-app
+        protocol: TCP
+        port: 80
+        targetPort: 8080

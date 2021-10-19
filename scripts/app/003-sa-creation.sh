@@ -17,5 +17,9 @@
 #SERVICE_ACCOUNT_EMAIL=${SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com
 #gcloud iam service-accounts create $SERVICE_ACCOUNT_NAME
 
-Migrating to Workload Identity
+#Migrating to Workload Identity
 
+SERVICE_ACCOUNT="svc-invoker"
+SERVICE_ACCOUNT_EMAIL=${SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com
+gcloud iam service-accounts create $SERVICE_ACCOUNT \
+  --display-name "Service Account Invoker"
