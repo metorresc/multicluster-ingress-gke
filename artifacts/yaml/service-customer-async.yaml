@@ -1,4 +1,3 @@
-#!/bin/bash
 # Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "Creating DataStore DB"
-cd $HOME/transactional-microservice-examples/services/event-publisher
-gcloud datastore indexes create index.yaml --quiet
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: customer-async-app
+    environment: dev
+  name: customer-async-svc
+  annotations:
+    cloud.google.com/load-balancer-type: Internal
+  namespace: app-mci
+spec:
+  selector:
+    app: customer-async-app
+    environment: dev
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
