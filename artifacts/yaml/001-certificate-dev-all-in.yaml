@@ -1,0 +1,13 @@
+apiVersion: networking.gke.io/v1beta2
+kind: ManagedCertificate
+metadata:
+  name: all-in-dev-cert
+  namespace: app-dev-env
+  labels:
+#    app: alpine-dev-app
+#    app: ubuntu-dev-app
+#    app: python-dev-app    
+    environment: dev
+spec:
+  domains:
+    - mci.gcp.conectica.cl

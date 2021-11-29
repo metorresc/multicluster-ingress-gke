@@ -1,0 +1,52 @@
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#apiVersion: extensions/v1beta1
+#kind: Ingress
+#metadata:
+#  labels:
+#    environment: dev
+#  name: glb-dev-ingress
+#  namespace: app-dev-env
+#  annotations:
+#    kubernetes.io/ingress.global-static-ip-name: glb-dev-ip
+#    networking.gke.io/managed-certificates: all-in-dev-cert
+#    kubernetes.io/ingress.allow-http: "false"
+#spec:
+#  rules:
+#  - host: dev-alpine.gcp.conectica.cl
+#    http:
+#      paths:
+#      - backend:
+#          serviceName: alpine-dev-svc
+#          servicePort: 80
+#  - host: dev-python.gcp.conectica.cl
+#    http:
+#      paths:
+#      - backend:
+#          serviceName: python-dev-svc
+#          servicePort: 80
+
+apiVersion: networking.gke.io/v1
+kind: MultiClusterIngress
+metadata:
+  name: publisher-ingress-mc
+  namespace: app-mci
+spec:
+  template:
+    spec:
+      backend:
+        serviceName: event-publisher-svc
+        servicePort: 80
+
