@@ -12,15 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.10-alpine as compiler
-RUN apk add --no-cache git
-RUN go get cloud.google.com/go/compute/metadata
-WORKDIR /go/src/zoneprinter
-COPY . .
-RUN go install
-
-FROM alpine
-LABEL source="https://github.com/metorresc/multicluster-ingress-gke/tree/main/app"
-COPY --from=compiler /go/bin/zoneprinter ./zoneprinter
-ENTRYPOINT ./zoneprinter
-EXPOSE 80
+apiVersion: networking.gke.io/v1beta2
+kind: ManagedCertificate
+metadata:
+  name: us-west-local-cert
+  namespace: local-zoneprinter
+  labels:
+    app: us-west-local-app
+    environment: dev
+spec:
+  domains:
+    - us-west.gcp.conectica.cl

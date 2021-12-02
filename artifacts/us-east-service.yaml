@@ -1,11 +1,10 @@
-#!/bin/bash
-# Copyright 2021 Google LLC
+#  Copyright 2021 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#      http:#www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,9 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-gcloud scheduler jobs create http event-publisher-scheduler \
-       --schedule='* * * * *' \
-       --http-method=GET \
-       --uri=$SERVICE_URL \
-       --oidc-service-account-email=$SERVICE_ACCOUNT_EMAIL \
-       --oidc-token-audience=$SERVICE_URL
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: us-east-local-app
+    environment: dev
+  name: us-east-local
+  namespace: local-zoneprinter
+#  annotations:
+#    cloud.google.com/load-balancer-type: Internal
+spec:
+  selector:
+    app: us-east-local-app
+    environment: dev
+  type: LoadBalancer
+  loadBalancerIP: 35.245.199.75 
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

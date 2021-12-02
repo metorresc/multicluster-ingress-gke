@@ -12,15 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.10-alpine as compiler
-RUN apk add --no-cache git
-RUN go get cloud.google.com/go/compute/metadata
-WORKDIR /go/src/zoneprinter
-COPY . .
-RUN go install
-
-FROM alpine
-LABEL source="https://github.com/metorresc/multicluster-ingress-gke/tree/main/app"
-COPY --from=compiler /go/bin/zoneprinter ./zoneprinter
-ENTRYPOINT ./zoneprinter
-EXPOSE 80
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: cl-local-app
+    environment: dev
+  name: cl-local
+  namespace: local-zoneprinter
+  annotations:
+    cloud.google.com/load-balancer-type: Internal
+spec:
+  selector:
+    app: cl-local-app
+    environment: dev
+  type: LoadBalancer
+#  loadBalancerIP: 34.176.118.186 
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

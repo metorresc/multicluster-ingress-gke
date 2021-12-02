@@ -12,15 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.10-alpine as compiler
-RUN apk add --no-cache git
-RUN go get cloud.google.com/go/compute/metadata
-WORKDIR /go/src/zoneprinter
-COPY . .
-RUN go install
-
-FROM alpine
-LABEL source="https://github.com/metorresc/multicluster-ingress-gke/tree/main/app"
-COPY --from=compiler /go/bin/zoneprinter ./zoneprinter
-ENTRYPOINT ./zoneprinter
-EXPOSE 80
+apiVersion: skaffold/v2beta16
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - us-*
+      - cl-*
+      - mci-*

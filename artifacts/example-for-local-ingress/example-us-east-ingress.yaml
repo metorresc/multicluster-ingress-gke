@@ -12,15 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.10-alpine as compiler
-RUN apk add --no-cache git
-RUN go get cloud.google.com/go/compute/metadata
-WORKDIR /go/src/zoneprinter
-COPY . .
-RUN go install
-
-FROM alpine
-LABEL source="https://github.com/metorresc/multicluster-ingress-gke/tree/main/app"
-COPY --from=compiler /go/bin/zoneprinter ./zoneprinter
-ENTRYPOINT ./zoneprinter
-EXPOSE 80
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    environment: dev
+  name: us-east-regional-ingress
+  namespace: local-zoneprinter
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: static-ip-dev-cl
+    networking.gke.io/managed-certificates: cl-local-cert
+    kubernetes.io/ingress.allow-http: "false"
+spec:
+  defaultBackend:
+    service:
+      name: us-east-local
+      port:
+       number: 8080
+  rules:
+  - host: us-east.gcp.conectica.cl
